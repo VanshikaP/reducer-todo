@@ -84,3 +84,7 @@ h4 {
   top: 9px;
 }
 
+.completed{
+  text-decoration: line-through;
+  color: gray;
+}
