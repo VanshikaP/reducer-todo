@@ -1,23 +1,37 @@
-// import React from 'react'
+import React from 'react'
+import { useLocalStorage } from '../hooks/useLocalStorage'
 
+const createDate = (date) => {
+    let year = date.substring(0,4)
+    let month = date.substring(5,7)
+    let day = date.substring(8,10)
+    let d = new Date(year, month-1, day)
+    return d.toDateString()
+}
+const createAdvanceDate = (date) => {
+    let d = date.getTime() + ( 7 * 24 * 60 * 60 * 1000 )
+    return (new Date(d)).toDateString()
+}
 export const initialState = {
     editing: false,
     tasks: [
         {
             id: 0,
             title: 'Task 1',
+            due: createAdvanceDate(new Date()),
             completed: false
         },
         {
             id: 1,
             title: 'Task 2',
+            due: createAdvanceDate(new Date()),
             completed: false
         }
     ]
 }
 
 export const listReducer = (state, action) => {
-    console.log(action)
+    
     switch(action.type) {
         case 'TOGGLE_EDITING' :
             return {
@@ -31,9 +45,8 @@ export const listReducer = (state, action) => {
                     if(task.id === action.payload.id){
                         console.log(`updating task ${task.id} with ${action.payload.title}`)
                         return {
-                            id: task.id,
+                            ...task,
                             title: action.payload.title,
-                            completed: task.completed
                         }
                     } else {
                         return task;
@@ -47,8 +60,7 @@ export const listReducer = (state, action) => {
                     if(task.id === action.payload.id){
                         console.log(`updating task status`)
                         return {
-                            id: task.id,
-                            title: task.title,
+                            ...task,
                             completed: !task.completed
                         }
                     } else {
@@ -57,7 +69,7 @@ export const listReducer = (state, action) => {
                 })
             }
         case 'ADD_TASK' :
-            console.log('Adding task', action.payload.title)
+            console.log('Adding task', action.payload)
             return {
                 editing: false,
                 tasks: [
@@ -65,6 +77,7 @@ export const listReducer = (state, action) => {
                     {
                         id: action.payload.id,
                         title: action.payload.title,
+                        due: createDate(action.payload.due),
                         completed: false
                     }
                 ]

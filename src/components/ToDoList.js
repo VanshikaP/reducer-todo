@@ -9,11 +9,15 @@ const ToDoList = () => {
 
     const [{ editing, tasks }, dispatch] = useReducer(listReducer, initialState)
     const [newTaskTitle, setNewTaskTitle] = useState('')
+    const [newTaskDue, setNewTaskDue] = useState();
 
     console.log(editing, tasks);
 
     const handleChanges = e => {
         setNewTaskTitle(e.target.value)
+    }
+    const handleDateChanges = e => {
+        setNewTaskDue(e.target.value)
     }
 
     const updateTasks = (taskTitle, taskId) => {
@@ -85,15 +89,18 @@ const ToDoList = () => {
                 ? (
                     <div className='task-list-input'>
                         <input className='task-input' type='text' value={newTaskTitle} onChange={handleChanges} />
+                        <input className='task-input' type='date' value={newTaskDue} onChange={handleDateChanges} />
                         <button onClick={() => {
-                            setNewTaskTitle('')
                             dispatch({ 
                                 type: 'ADD_TASK', 
                                 payload: { 
                                     id: Date.now(), 
-                                    title: newTaskTitle 
+                                    title: newTaskTitle,
+                                    due: newTaskDue
                                 }
                             }) 
+                            setNewTaskTitle('')
+                            setNewTaskDue()
                     }}>Add Task</button>
                     <button onClick={() => dispatch({ type: 'TOGGLE_EDITING' })}>Back</button>
                     </div>

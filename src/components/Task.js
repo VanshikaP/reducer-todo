@@ -4,7 +4,7 @@ import { taskReducer, initialState } from '../reducers/taskReducer'
 
 const Task = ({task, updateTasks, toggleStatus}) => {
 
-    const [{ editing, title, completed}, dispatch] = useReducer(taskReducer, initialState(task))
+    const [{ editing, title, due, completed}, dispatch] = useReducer(taskReducer, initialState(task))
     const [newTitle, setNewTitle] = useState(title)
 
     console.log('current task: ', task.title, title);
@@ -26,13 +26,15 @@ const Task = ({task, updateTasks, toggleStatus}) => {
         toggleStatus(task.id)
     }
 
+    console.log(Date.parse(due) - Date.now());
+    const checkOverDue = (Date.parse(due) - Date.now()) < 0;
 
     return (
         <div className='task'>
             {!editing
             ?   (
                 <h2 > 
-                    <span onClick={handleStatus}>{title}</span> {' '}
+                    <span className= {checkOverDue ? 'overdue' : ''} onClick={handleStatus}>{title}</span> {` ${due}`}
                     <i className = 'far fa-edit' onClick={() => dispatch({ type: 'TOGGLE_EDITING' })} />
                 </h2>
             )

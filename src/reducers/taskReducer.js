@@ -2,7 +2,8 @@ export const initialState = (task) => {
     return {
         editing: false,
         title: task.title,
-        completed: task.completed
+        completed: task.completed,
+        due: task.due
     }
 }
 
@@ -15,9 +16,9 @@ export const taskReducer = (state, action) => {
             }
         case 'UPDATE_TASK' :
             return {
+                ...state,
                 editing: false,
                 title: action.payload,
-                completed: state.completed
             }
         case 'TOGGLE_STATUS' :
             return {
