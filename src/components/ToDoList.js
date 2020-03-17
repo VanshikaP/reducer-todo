@@ -36,64 +36,77 @@ const ToDoList = () => {
         })
     }
 
-    if(editing) {
-        return (
-            <div className = 'tasks-container'>
-                <div className='task-list'>
-                    {tasks.map(task => {
-                        return <Task task={task} updateTasks={updateTasks} toggleStatus={toggleStatus} />
-                    })}
-                </div>
-                <div>
-                    <input className='task-input' type='text' value={newTaskTitle} onChange={handleChanges} />
-                    <button onClick={() => dispatch({ type: 'ADD_TASK', payload: { id: Date.now(), title: newTaskTitle } })}>Update List</button>
-                </div>
-                <button onClick = {() => dispatch({ type: 'CLEAR_COMPLETED' })} >Clear Completed</button>
-            </div>
-        )
-    } else {
-        return (
-            <div className='tasks-container'>
-                <div className='task-list'>
-                    {tasks.map(task => {
-                        return <Task task={task} updateTasks={updateTasks} toggleStatus={toggleStatus} />
-                    })}
-                </div>
-                <button onClick = {() => dispatch({ type: 'TOGGLE_EDITING' })} >Add Task</button>
-                <button onClick = {() => dispatch({ type: 'CLEAR_COMPLETED' })} >Clear Completed</button>
-            </div>
-        )
-    }
+    // if(editing) {
+    //     return (
+    //         <div className = 'tasks-container'>
+    //             <div className='task-list'>
+    //                 {tasks.map(task => {
+    //                     return <Task task={task} updateTasks={updateTasks} toggleStatus={toggleStatus} />
+    //                 })}
+    //             </div>
+    //             <div>
+    //                 <input className='task-input' type='text' value={newTaskTitle} onChange={handleChanges} />
+    //                 <button onClick={() => {
+    //                     setNewTaskTitle('')
+    //                     dispatch({ 
+    //                         type: 'ADD_TASK', 
+    //                         payload: { 
+    //                             id: Date.now(), 
+    //                             title: newTaskTitle 
+    //                         }
+    //                     }) 
+    //                 }}>Update List</button>
+    //             </div>
+    //             <button onClick = {() => dispatch({ type: 'CLEAR_COMPLETED' })} >Clear Completed</button>
+    //         </div>
+    //     )
+    // } else {
+    //     return (
+    //         <div className='tasks-container'>
+    //             <div className='task-list'>
+    //                 {tasks.map(task => {
+    //                     return <Task key={task.id} task={task} updateTasks={updateTasks} toggleStatus={toggleStatus} />
+    //                 })}
+    //             </div>
+    //             <button onClick = {() => dispatch({ type: 'TOGGLE_EDITING' })} >Add Task</button>
+    //             <button onClick = {() => dispatch({ type: 'CLEAR_COMPLETED' })} >Clear Completed</button>
+    //         </div>
+    //     )
+    // }
 
-    // return (
-    //     <div className='task-list-container'>
-    //         {
-    //             // tasks.map(task => {
-    //             //     return <Task />
-    //             // })
+
+    return (
+        <div className='tasks-container'>
+            {tasks.map(task => {
+                return <Task key={task.id} task={task} updateTasks={updateTasks} toggleStatus={toggleStatus} />
+            })}
+            {
+                editing
+                ? (
+                    <div className='task-list-input'>
+                        <input className='task-input' type='text' value={newTaskTitle} onChange={handleChanges} />
+                        <button onClick={() => {
+                            setNewTaskTitle('')
+                            dispatch({ 
+                                type: 'ADD_TASK', 
+                                payload: { 
+                                    id: Date.now(), 
+                                    title: newTaskTitle 
+                                }
+                            }) 
+                    }}>Add Task</button>
+                    <button onClick={() => dispatch({ type: 'TOGGLE_EDITING' })}>Back</button>
+                    </div>
+                ) : (
+                    <div className = 'list-buttons-container'>
+                        <button onClick = {() => dispatch({ type: 'TOGGLE_EDITING' })} >Add Task</button>
+                        <button onClick = {() => dispatch({ type: 'CLEAR_COMPLETED' })} >Clear Completed</button>
+                    </div>
+                )
+            }
             
-    //             (editing)
-    //             ? (
-    //                 <div>
-    //                     {tasks.map(task => {
-    //                         return <Task />
-    //                     })}
-    //                     <input className='task-input' type='text' value={newTaskTitle} onChange={handleChanges} />
-    //                     <button onClick={() => dispatch({ type: 'UPDATE_LIST', payload: newTaskTitle })}>Update List</button>
-    //                 </div>
-    //             )
-    //             : (
-    //                 <div>
-    //                     {tasks.map(task => {
-    //                         return <Task />
-    //                     })}
-    //                     <button onClick = {() => dispatch({ type: 'TOGGLE_EDITING' })} >Add Task</button>
-    //                 </div>
-    //             )
-    //         }
-            
-    //     </div>
-    // )
+        </div>
+    )
 }
 
 export default ToDoList

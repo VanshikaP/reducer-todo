@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 
 export const initialState = {
     editing: false,
@@ -22,7 +22,7 @@ export const listReducer = (state, action) => {
         case 'TOGGLE_EDITING' :
             return {
                 ...state, 
-                editing: true
+                editing: !state.editing
             }
         case 'UPDATE_TASK_TITLE' :
             return {
@@ -57,6 +57,7 @@ export const listReducer = (state, action) => {
                 })
             }
         case 'ADD_TASK' :
+            console.log('Adding task', action.payload.title)
             return {
                 editing: false,
                 tasks: [

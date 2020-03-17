@@ -4,8 +4,10 @@ import { taskReducer, initialState } from '../reducers/taskReducer'
 
 const Task = ({task, updateTasks, toggleStatus}) => {
 
-    const [{ editing, title}, dispatch] = useReducer(taskReducer, initialState(task.title))
-    const [newTitle, setNewTitle] = useState('')
+    const [{ editing, title, completed}, dispatch] = useReducer(taskReducer, initialState(task))
+    const [newTitle, setNewTitle] = useState(title)
+
+    console.log('current task: ', task.title, title);
 
     const handleChanges = e => {
         setNewTitle(e.target.value)
@@ -15,6 +17,7 @@ const Task = ({task, updateTasks, toggleStatus}) => {
         e.preventDefault();
         dispatch({ type: 'UPDATE_TASK', payload: newTitle})
         updateTasks(newTitle, task.id)
+        setNewTitle('');
     }
 
     const handleStatus = e => {
@@ -25,11 +28,11 @@ const Task = ({task, updateTasks, toggleStatus}) => {
 
 
     return (
-        <div className='task' key={task.id} onClick={handleStatus}>
+        <div className='task'>
             {!editing
             ?   (
                 <h2 > 
-                    {title} {' '}
+                    <span onClick={handleStatus}>{title}</span> {' '}
                     <i className = 'far fa-edit' onClick={() => dispatch({ type: 'TOGGLE_EDITING' })} />
                 </h2>
             )

@@ -1,10 +1,8 @@
-// import React from 'react'
-
-export const initialState = (task_title) =>{
+export const initialState = (task) => {
     return {
         editing: false,
-        title: task_title,
-        completed: false
+        title: task.title,
+        completed: task.completed
     }
 }
 
